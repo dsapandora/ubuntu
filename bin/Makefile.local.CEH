@@ -1,0 +1,6 @@
+# Local CEH Makefile, copy to Makefile.local in root before building
+# to use CEH config.
+
+HEADLESS        = true
+CM              = puppet
+BOX_VERSION     = 0.1.3

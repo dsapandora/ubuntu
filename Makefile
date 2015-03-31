@@ -152,6 +152,12 @@ $(VMWARE_BOX_DIR)/%$(BOX_SUFFIX): %.json $(SOURCES)
 	rm -rf $(VMWARE_OUTPUT)
 	mkdir -p $(VMWARE_BOX_DIR)
 	$(PACKER_CMD) build -only=$(VMWARE_BUILDER) $(PACKER_VARS) $<
+	# CEH Customisation to disable VNC by default in built box
+	mkdir -p $(VMWARE_BOX_DIR)/temp
+	tar zxf $(VMWARE_BOX_DIR)/$*$(BOX_SUFFIX) -C $(VMWARE_BOX_DIR)/temp
+	sed -i -e 's/vnc\.enabled = "TRUE"/vnc\.enabled = "FALSE"/g' $(VMWARE_BOX_DIR)/temp/*.vmx
+	tar czf $(VMWARE_BOX_DIR)/$*$(BOX_SUFFIX) -C $(VMWARE_BOX_DIR)/temp .
+	rm -rf $(VMWARE_BOX_DIR)/temp
 
 $(VIRTUALBOX_BOX_DIR)/%$(BOX_SUFFIX): %.json $(SOURCES)
 	rm -rf $(VIRTUALBOX_OUTPUT)

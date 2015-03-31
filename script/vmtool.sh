@@ -8,16 +8,27 @@ if [[ $PACKER_BUILDER_TYPE =~ vmware ]]; then
     # apt-get install -y linux-headers-$(uname -r) build-essential perl
 
     cd /tmp
-    mkdir -p /mnt/cdrom
-    mount -o loop /home/${SSH_USER}/linux.iso /mnt/cdrom
-    tar zxf /mnt/cdrom/VMwareTools-*.tar.gz -C /tmp/
 
-    /tmp/vmware-tools-distrib/vmware-install.pl -d
+    # Get VMware Tools patches to fix any kernel incompatabilities
+    apt-get install -y unzip
 
-    rm /home/${SSH_USER}/linux.iso
-    umount /mnt/cdrom
-    rmdir /mnt/cdrom
-    rm -rf /tmp/VMwareTools-*
+    NEXT_WAIT_TIME=0
+    echo "==> Cloning VMware Tools patch repository from GitHub"
+    until git clone https://github.com/rasa/vmware-tools-patches.git || [ $NEXT_WAIT_TIME -eq 5 ]; do
+        echo "==> Git clone of vmware-tools-patches failed, retrying..."
+        sleep $(( NEXT_WAIT_TIME++ ))
+    done
+
+    if [ -d "vmware-tools-patches" ]; then
+        echo "==> Patching VMware Tools before compilation"
+        cd vmware-tools-patches
+        #TODO: Abstract out tools version number
+        ./download-tools.sh 7.1.1
+        ./untar-and-patch.sh
+        ./compile.sh
+        cd /tmp
+        rm -rf /tmp/vmware-tools-patches
+    fi
 fi
 
 if [[ $PACKER_BUILDER_TYPE =~ virtualbox ]]; then

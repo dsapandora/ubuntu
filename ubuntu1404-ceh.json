@@ -161,6 +161,18 @@
       "keep_input_artifact": false,
       "output": "box/{{.Provider}}/ubuntu1404-ceh-{{user `cm`}}{{user `cm_version`}}-{{user `version`}}.box",
       "type": "vagrant"
+    },
+    {
+      "type": "vsphere",
+      "cluster": "Lancaster_cluster",
+      "datacenter": "Lancaster",
+      "datastore": "{{user `vsphere_datastore`}}",
+      "host": "{{user `vsphere_host`}}",
+      "username": "{{user `vsphere_username`}}",
+      "password": "{{user `vsphere_password`}}",
+      "vm_name": "ubuntu1404-appdev-{{user `version`}}",
+      "vm_folder": "{{user `vsphere_template_folder`}}",
+      "vm_network": "{{user `vsphere_vlan`}}"
     }
   ],
   "provisioners": [
@@ -201,11 +213,11 @@
     "headless": "",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
-    "install_vagrant_key": true,
-    "iso_checksum": "0501c446929f713eb162ae2088d8dc8b6426224a",
-    "iso_name": "ubuntu-14.04.3-server-amd64.iso",
+    "install_vagrant_key": "true",
+    "iso_checksum": "3ffb7a3690ce9a07ac4a4d1b829f990681f7e47d",
+    "iso_name": "ubuntu-14.04.4-server-amd64.iso",
     "iso_path": "iso",
-    "iso_url": "http://releases.ubuntu.com/14.04/ubuntu-14.04.3-server-amd64.iso",
+    "iso_url": "http://releases.ubuntu.com/14.04/ubuntu-14.04.4-server-amd64.iso",
     "no_proxy": "{{env `no_proxy`}}",
     "rsync_proxy": "{{env `rsync_proxy`}}",
     "hostname": "vagrant",
@@ -213,7 +225,13 @@
     "ssh_password": "vagrant",
     "ssh_username": "vagrant",
     "update": "false",
-    "version": "0.1.0"
+    "version": "0.1.0",
+    "vsphere_datastore": "v3700-01-cluster01/v3700-01-vol1",
+    "vsphere_username": "{{env `vsphere_username`}}",
+    "vsphere_password": "{{env `vsphere_password`}}",
+    "vsphere_host": "la-vcenter1.nerc-lancaster.ac.uk",
+    "vsphere_template_folder": "Templates",
+    "vsphere_vlan": "VM Vlan 14"
   }
 }
 

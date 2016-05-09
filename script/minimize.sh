@@ -1,5 +1,9 @@
 #!/bin/bash -eux
 
+if [[ "$DESKTOP" =~ ^(true|yes|on|1|TRUE|YES|ON])$ ]]; then
+  exit
+fi
+
 echo "==> Disk usage before minimization"
 df -h
 
@@ -18,7 +22,7 @@ dpkg --list | awk '{ print $2 }' | grep -- '-doc$' | xargs apt-get -y purge
 echo "==> Removing development tools"
 #dpkg --list | grep -i compiler | awk '{ print $2 }' | xargs apt-get -y purge
 #apt-get -y purge cpp gcc g++ 
-apt-get -y purge build-essential
+apt-get -y purge build-essential git
 echo "==> Removing default system Ruby"
 apt-get -y purge ruby ri doc
 echo "==> Removing default system Python"

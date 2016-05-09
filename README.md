@@ -2,59 +2,85 @@
 
 ### Overview
 
-This repository contains templates for Ubuntu that can create Vagrant boxes
-using Packer.
+This repository contains [Packer](https://packer.io/) templates for creating Ubuntu Vagrant boxes.
 
 ## Current Boxes
 
 64-bit boxes:
 
-* [Ubuntu Server 15.04 (64-bit)](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1504)
-* [Ubuntu Desktop 15.04 (64-bit)](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1504-desktop)
-* [Ubuntu Server 15.04 (64-bit) with Docker preinstalled](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1504-docker)
-* [Ubuntu Server 14.10 (64-bit)](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1410)
-* [Ubuntu Server 14.10 (64-bit) with Docker preinstalled](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1410-docker)
-* [Ubuntu Server 14.04.2 (64-bit)](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1404)
-* [Ubuntu Desktop 14.04.2 (64-bit)](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1404-desktop)
-* [Ubuntu Server 14.04.2 (64-bit) with Docker preinstalled](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1404-docker)
+* [Ubuntu Server 16.04 (64-bit)](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1604)
+* [Ubuntu Server 15.10 (64-bit)](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1510)
+* [Ubuntu Server 14.04.4 (64-bit)](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1404)
+* [Ubuntu Desktop 14.04.4 (64-bit)](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1404-desktop)
+* [Ubuntu Server 14.04.4 (64-bit) with Docker preinstalled](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1404-docker)
 * [Ubuntu Server 12.04.5 (64-bit)](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1204)
-* [Ubuntu Desktop 12.04.4 (64-bit)](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1204-desktop)
+* [Ubuntu Desktop 12.04.5 (64-bit)](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1204-desktop)
 * [Ubuntu Server 12.04.5 (64-bit) with Docker preinstalled](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1204-docker)
-* [Ubuntu Server 10.04.4 (64-bit)](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1004)
 
 32-bit boxes:
 
-* [Ubuntu Server 15.04 (32-bit)](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1504-i386)
-* [Ubuntu Server 14.10 (32-bit)](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1410-i386)
-* [Ubuntu Server 14.04.1 (32-bit)](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1404-i386)
+* [Ubuntu Server 14.04.4 (32-bit)](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1404-i386)
 * [Ubuntu Server 12.04.5 (32-bit)](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1204-i386)
-* [Ubuntu Server 10.04.4 (32-bit)](https://atlas.hashicorp.com/boxcutter/boxes/ubuntu1004-i386)
 
-## Building the Vagrant boxes
+## Building the Vagrant boxes with Packer
 
-To build all the boxes, you will need VirtualBox, VMware Fusion, and Parallels Desktop for Mac installed.
+To build all the boxes, you will need [VirtualBox](https://www.virtualbox.org/wiki/Downloads), 
+[VMware Fusion](https://www.vmware.com/products/fusion)/[VMware Workstation](https://www.vmware.com/products/workstation) and
+[Parallels](http://www.parallels.com/products/desktop/whats-new/) installed.
 
 Parallels requires that the
 [Parallels Virtualization SDK for Mac](http://www.parallels.com/downloads/desktop)
 be installed as an additional preqrequisite.
 
-A GNU Make `Makefile` drives the process via the following targets:
+VMware Fusion boxes require this patch when running version 8.1.0 to enable port forwarding:
+https://blogs.vmware.com/teamfusion/2016/01/workaround-of-nat-port-forwarding-issue-in-fusion-8-1.html
 
-    make        # Build all available box types
-    make test   # Run tests against all the boxes
-    make list   # Print out the list of all available boxes
-    make clean  # Clean up build detritus
+We make use of JSON files containing user variables to build specific versions of Ubuntu.
+You tell `packer` to use a specific user variable file via the `-var-file=` command line
+option.  This will override the default options on the core `ubuntu.json` packer template,
+which builds Ubuntu 16.04 by default.
 
-To build one particular box, e.g. `ubuntu1404`,
-for just one provider, e.g. VirtualBox,
-first run `make list` subcommand:
+For example, to build Ubuntu 16.04, use the following:
 
-    make list
+    $ packer build -var-file=ubuntu1604.json ubuntu.json
+    
+If you want to make boxes for a specific desktop virtualization platform, use the `-only`
+parameter.  For example, to build Ubuntu 16.04 for VirtualBox:
 
-This command prints the list of available boxes.
-Then you can build one particular box for choosen provider:
+    $ packer build -only=virtualbox-iso -var-file=ubuntu1604.json ubuntu.json
 
-    make virtualbox/ubuntu1404
+The boxcutter templates currently support the following desktop virtualization strings:
+
+* `parallels-iso` - [Parallels](http://www.parallels.com/products/desktop/whats-new/) desktop virtualization (Requires the Pro Edition - Desktop edition won't work)
+* `virtualbox-iso` - [VirtualBox](https://www.virtualbox.org/wiki/Downloads) desktop virtualization
+* `vmware-iso` - [VMware Fusion](https://www.vmware.com/products/fusion) or [VMware Workstation](https://www.vmware.com/products/workstation) desktop virtualization
+
+## Building the Vagrant boxes with the box script
+
+We've also provided a wrapper script `bin/box` for ease of use, so alternatively, you can use
+the following to build Ubuntu 16.04 for all providers:
+
+    $ bin/box build ubuntu1604
+
+Or if you just want to build Ubuntu 16.04 for VirtualBox:
+
+    $ bin/box build ubuntu1604 virtualbox
+
+## Building the Vagrant boxes with the Makefile
+
+A GNU Make `Makefile` drives a complete basebox creation pipeline with the following stages:
+
+* `build` - Create basebox `*.box` files
+* `assure` - Verify that the basebox `*.box` files produced function correctly
+* `deliver` - Upload `*.box` files to [Artifactory](https://www.jfrog.com/confluence/display/RTF/Vagrant+Repositories), [Atlas](https://atlas.hashicorp.com/) or an [S3 bucket](https://aws.amazon.com/s3/)
+
+The pipeline is driven via the following targets, making it easy for you to include them
+in your favourite CI tool:
+
+    make build   # Build all available box types
+    make assure  # Run tests against all the boxes
+    make deliver # Upload box artifacts to a repository
+    make clean   # Clean up build detritus
 
 ### Proxy Settings
 
@@ -70,41 +96,37 @@ process, should you be using a proxy:
 
 ### Tests
 
-The tests are written in [Serverspec](http://serverspec.org) and require the
-`vagrant-serverspec` plugin to be installed with:
+Automated tests are written in [Serverspec](http://serverspec.org) and require
+the `vagrant-serverspec` plugin to be installed with:
 
     vagrant plugin install vagrant-serverspec
 
-The `Makefile` has individual targets for each box type with the prefix
-`test-*` should you wish to run tests individually for each box.  For example:
+The `bin/box` script has subcommands for running both the automated tests
+and for performing exploratory testing.
 
-    make test-box/virtualbox/ubuntu1404-nocm.box
+Use the `bin/box test` subcommand to run the automated Serverspec tests.
+For example to execute the tests for the Ubuntu 14.04 box on VirtualBox, use
+the following:
 
-Similarly there are targets with the prefix `ssh-*` for registering a
-newly-built box with vagrant and for logging in using just one command to
-do exploratory testing.  For example, to do exploratory testing
-on the VirtualBox training environmnet, run the following command:
+    bin/box test ubuntu1604 virtualbox
 
-    make ssh-box/virtualbox/ubuntu1404-nocm.box
+Similarly, to perform exploratory testing on the VirtualBox image via ssh,
+run the following command:
 
-Upon logout `make ssh-*` will automatically de-register the box as well.
+    bin/box ssh ubuntu1604 virtualbox
 
-### Makefile.local override
+### Variable overrides
 
-You can create a `Makefile.local` file alongside the `Makefile` to override
-some of the default settings.  The variables can that can be currently
+There are several variables that can be used to override some of the default
+settings in the box build process. The variables can that can be currently
 used are:
 
-* CM
-* CM_VERSION
-* \<iso_path\>
-* UPDATE
-
-`Makefile.local` is most commonly used to override the default configuration
-management tool, for example with Chef:
-
-    # Makefile.local
-    CM := chef
+* cm
+* cm_version
+* cpus
+* disk_size
+* memory
+* update
 
 Changing the value of the `CM` variable changes the target suffixes for
 the output of `make list` accordingly.
@@ -112,6 +134,7 @@ the output of `make list` accordingly.
 Possible values for the CM variable are:
 
 * `nocm` - No configuration management tool
+* `ansible` - Install Ansible
 * `chef` - Install Chef
 * `chefdk` - Install Chef Development Kit
 * `puppet` - Install Puppet
@@ -120,7 +143,7 @@ Possible values for the CM variable are:
 You can also specify a variable `CM_VERSION`, if supported by the
 configuration management tool, to override the default of `latest`.
 The value of `CM_VERSION` should have the form `x.y` or `x.y.z`,
-such as `CM_VERSION := 11.12.4`
+such as `CM_VERSION := 12.9.32`
 
 The variable `HEADLESS` can be set to run Packer in headless mode.
 Set `HEADLESS := true`, the default is false.
@@ -157,7 +180,16 @@ Set `INSTALL_VAGRANT_KEY := false`, the default is true.
 8. Push to your fork and submit a pull request.
 9. Once submitted, a full `make test` run will be performed against your change in the build farm.  You will be notified if the test suite fails.
 
+### Would you like to help out more?
+
+Contact moujan@annawake.com 
+
 ### Acknowledgments
+
+[Parallels](http://www.parallels.com/) provides a Business Edition license of
+their software to run on the basebox build farm.
+
+<img src="http://www.parallels.com/fileadmin/images/corporate/brand-assets/images/logo-knockout-on-red.jpg" width="80">
 
 [SmartyStreets](http://www.smartystreets.com) is providing basebox hosting for the box-cutter project.
 

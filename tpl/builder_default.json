@@ -3,7 +3,7 @@
     "{{ user `boot_command_prefix` }}",
     "/install/vmlinuz noapic ",
     "file=/floppy/{{ user `preseed` }} ",
-    "debian-installer=en_US auto locale=en_US kbd-chooser/method=gb ",
+    "debian-installer=en_GB auto locale=en_GB kbd-chooser/method=gb ",
     "hostname={{ user `hostname` }} ",
     "grub-installer/bootdev=/dev/sda<wait> ",
     "fb=false debconf/frontend=noninteractive ",

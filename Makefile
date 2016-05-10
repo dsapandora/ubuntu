@@ -4,7 +4,7 @@ TEMPLATES ?= vagrant esxi
 
 export cm ?= puppet
 export cm_version ?=
-export headless ?= true
+export headless ?= false
 export version ?= $(shell cat VERSION)
 
 .PHONY : clean

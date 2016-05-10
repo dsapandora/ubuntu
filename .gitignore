@@ -11,5 +11,7 @@ Makefile.local
 .tmpatlas/
 
 .DS_Store
+.bundle/
 
 custom.sh
+tpl-*.json

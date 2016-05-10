@@ -1,11 +1,30 @@
+BOX_FILENAMES := $(wildcard ubuntu*.json)
+BOXES ?= $(basename $(BOX_FILENAMES))
+TEMPLATES ?= vagrant esxi
+
+export cm ?= puppet
+export cm_version ?=
+export headless ?= true
+export version ?= $(shell cat VERSION)
+
 .PHONY : clean
-all:
 
-ubuntu-tpl.json:
-	jq -s '.[1] as $$b | .[0].builders |= map(.+$$b) | .[0]' tpl/base.json tpl/builder_default.json > ubuntu-tpl.json
+all: clean build-vagrant build-esxi
 
-ubuntu-vagrant-tpl.json: ubuntu-tpl.json
-	jq -s '.[0]["post-processors"] = .[1] | .[0]' ubuntu-tpl.json tpl/postprocess_vagrant.json > ubuntu-vagrant-tpl.json
+build-%: tpl-%.json
+	@for box in $(BOXES) ; do \
+	  packer build -var-file=$$box.json -var-file=$@.json $< ; \
+	done
+
+tpl-ubuntu.json:
+	jq -s '.[1] as $$b | .[0].builders |= map(.+$$b) | .[0]' tpl/base.json tpl/builder_default.json > tpl-ubuntu.json
+
+tpl-vagrant.json: tpl-ubuntu.json
+	jq -s '.[0]["post-processors"] = .[1] | .[0]' tpl-ubuntu.json tpl/postprocess_vagrant.json > tpl-vagrant.json
+
+tpl-esxi.json: tpl-ubuntu.json
+	jq -s '.[0]["post-processors"] = .[1] | .[0]' tpl-ubuntu.json tpl/postprocess_esxi.json > tpl-esxi.json
 
 clean:
-	$(RM) *-tpl.json
+	$(RM) tpl-*.json
+	$(RM) box/**/*.box

@@ -14,4 +14,4 @@ Makefile.local
 .bundle/
 
 custom.sh
-*-tpl.json
+tpl-*.json

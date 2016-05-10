@@ -64,18 +64,15 @@
   "variables": {
     "boot_command_prefix": "<enter><wait><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
     "cleanup_pause": "",
-    "cm": "nocm",
-    "cm_version": "",
+    "cm": "{{env `cm`}}",
+    "cm_version": "{{env `cm_version`}}",
     "cpus": "2",
     "disk_size": "32768",
     "ftp_proxy": "{{env `ftp_proxy`}}",
-    "headless": "",
+    "headless": "{{env `headless`}}",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
-    "install_vagrant_key": "true",
-    "iso_checksum": "70db69379816b91eb01559212ae474a36ecec9ef",
     "iso_checksum_type": "sha1",
-    "iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04-server-amd64.iso",
     "memory": "2048",
     "no_proxy": "{{env `no_proxy`}}",
     "preseed" : "preseed.cfg",
@@ -85,9 +82,8 @@
     "ssh_password": "vagrant",
     "ssh_username": "vagrant",
     "update": "false",
-    "version": "0.1.0",
+    "version": "{{env `version`}}",
     "virtualbox_guest_os_type": "Ubuntu_64",
-    "vm_name": "ubuntu1404",
     "vmware_guest_os_type": "ubuntu-64"
   }
 }

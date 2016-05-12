@@ -31,5 +31,6 @@ publish:
 	ruby bin/register_atlas.rb
 
 clean:
+	$(RM) -r output-*
 	$(RM) tpl-*.json
 	$(RM) box/**/*.box

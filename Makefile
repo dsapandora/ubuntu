@@ -1,6 +1,7 @@
 BOX_FILENAMES := $(wildcard ubuntu*.json)
 BOXES ?= $(basename $(BOX_FILENAMES))
 TEMPLATES ?= vagrant esxi
+PACKER_ARGS ?=
 
 export cm ?= puppet
 export cm_version ?=
@@ -13,7 +14,7 @@ all: clean build-vagrant build-esxi
 
 build-%: tpl-%.json
 	@for box in $(BOXES) ; do \
-	  packer build -var-file=$$box.json -var-file=$@.json $< ; \
+	  packer build $(PACKER_ARGS) -var-file=$$box.json -var-file=$@.json $< ; \
 	done
 
 tpl-ubuntu.json:
@@ -24,6 +25,10 @@ tpl-vagrant.json: tpl-ubuntu.json
 
 tpl-esxi.json: tpl-ubuntu.json
 	jq -s '.[0]["post-processors"] = .[1] | .[0]' tpl-ubuntu.json tpl/postprocess_esxi.json > tpl-esxi.json
+
+publish:
+	rsync -av --include '*/' --include '*.box' --exclude '*' box/ -e ssh automaton@dist.nerc-lancaster.ac.uk:/www/boxes
+	ruby bin/register_atlas.rb
 
 clean:
 	$(RM) tpl-*.json

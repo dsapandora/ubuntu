@@ -26,6 +26,10 @@ tpl-vagrant.json: tpl-ubuntu.json
 tpl-esxi.json: tpl-ubuntu.json
 	jq -s '.[0]["post-processors"] = .[1] | .[0]' tpl-ubuntu.json tpl/postprocess_esxi.json > tpl-esxi.json
 
+publish:
+	rsync -av --include '*/' --include '*.box' --exclude '*' box/ -e ssh automaton@dist.nerc-lancaster.ac.uk:/www/boxes
+	ruby bin/register_atlas.rb
+
 clean:
 	$(RM) tpl-*.json
 	$(RM) box/**/*.box

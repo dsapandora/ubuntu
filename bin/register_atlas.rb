@@ -55,6 +55,7 @@ def create_or_update(create_uri, resource_uri, data)
   if update.code != '200'    # Make sure that the status code was 200
     raise "Unknown HTTP status #{resource_uri}: #{update.code} #{update.body}"
   end
+  puts "Updated: #{resource_uri}"
 end
 
 # Interact with the Atlas rest api to register the built box. The boxes

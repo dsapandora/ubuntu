@@ -35,6 +35,7 @@
         "CM_VERSION={{user `cm_version`}}",
         "CLEANUP_PAUSE={{user `cleanup_pause`}}",
         "UPDATE={{user `update`}}",
+        "VMWARE_TOOLS_VERSION={{user `vmware_tools_version`}}",
         "INSTALL_VAGRANT_KEY={{user `install_vagrant_key`}}",
         "SSH_USERNAME={{user `ssh_username`}}",
         "SSH_PASSWORD={{user `ssh_password`}}",
@@ -82,6 +83,7 @@
     "update": "false",
     "version": "{{env `version`}}",
     "virtualbox_guest_os_type": "Ubuntu_64",
-    "vmware_guest_os_type": "ubuntu-64"
+    "vmware_guest_os_type": "ubuntu-64",
+    "vmware_tools_version": "latest"
   }
 }

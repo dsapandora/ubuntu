@@ -80,14 +80,6 @@
     "virtualbox_guest_os_type": "Ubuntu_64",
     "vmware_guest_os_type": "ubuntu-64",
     "vmware_restart_after_install": "false",
-    "vmware_tools_version": "latest",
-    "vsphere_cluster": "Lancaster_cluster",
-    "vsphere_datacenter": "Lancaster",
-    "vsphere_datastore": "v3700-01-vol1",
-    "vsphere_username": "{{env `vsphere_username`}}",
-    "vsphere_password": "{{env `vsphere_password`}}",
-    "vsphere_host": "la-vcenter1.nerc-lancaster.ac.uk",
-    "vsphere_template_folder": "Production Machines/Linux/eidc/Templates",
-    "vsphere_vlan": "VM Vlan 14"
+    "vmware_tools_version": "latest"
   }
 }

@@ -38,5 +38,5 @@ if [ "${1##*.}" == 'vmx' ]; then
     --network="$vm_network"  \
     --datastore="$datastore" \
     --vmFolder="$vm_folder"  \
-    $1 "vi://`e $username`:`e $password`@`e $host`/`e $datacenter`/host/`e $cluster`"
+    $1 "vi://`e $vsphere_username`:`e $vsphere_password`@`e $host`/`e $datacenter`/host/`e $cluster`"
 fi

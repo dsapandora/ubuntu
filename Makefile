@@ -3,6 +3,9 @@ BOXES ?= $(basename $(BOX_FILENAMES))
 TEMPLATES ?= vagrant vsphere
 PACKER_ARGS ?=
 
+JQ_SET_POST_PROCESSOR := .[0]["post-processors"] = .[1]
+JQ_VMWARE_BUILDS_ONLY := .[0]["builders"] = (.[0]["builders"][] | select(.type == "vmware-iso"))
+
 export cm ?= puppet
 export cm_version ?=
 export headless ?= false
@@ -21,10 +24,10 @@ tpl-ubuntu.json:
 	jq -s '.[1] as $$b | .[0].builders |= map(.+$$b) | .[0]' tpl/base.json tpl/builder_default.json > tpl-ubuntu.json
 
 tpl-vagrant.json: tpl-ubuntu.json
-	jq -s '.[0]["post-processors"] = .[1] | .[0]' tpl-ubuntu.json tpl/postprocess_vagrant.json > tpl-vagrant.json
+	jq -s '$(JQ_SET_POST_PROCESSOR) | .[0]' tpl-ubuntu.json tpl/postprocess_vagrant.json > tpl-vagrant.json
 
 tpl-vsphere.json: tpl-ubuntu.json
-	jq -s '.[0]["post-processors"] = .[1] | .[0]' tpl-ubuntu.json tpl/postprocess_vsphere.json > tpl-vsphere.json
+	jq -s '$(JQ_SET_POST_PROCESSOR) | $(JQ_VMWARE_BUILDS_ONLY) | .[0]' tpl-ubuntu.json tpl/postprocess_vsphere.json > tpl-vsphere.json
 
 publish:
 	rsync -av --include '*/' --include '*.box' --exclude '*' box/ -e ssh automaton@dist.nerc-lancaster.ac.uk:/www/boxes

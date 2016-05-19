@@ -19,7 +19,8 @@
       "type": "virtualbox-iso",
       "vboxmanage": [
         ["modifyvm", "{{.Name}}", "--memory", "{{ user `memory` }}"],
-        ["modifyvm", "{{.Name}}", "--cpus", "{{ user `cpus` }}"]
+        ["modifyvm", "{{.Name}}", "--cpus", "{{ user `cpus` }}"],
+        ["modifyvm", "{{.Name}}", "--vrdeproperty", "VNCPassword=password"]
       ],
       "virtualbox_version_file": ".vbox_version"
     }

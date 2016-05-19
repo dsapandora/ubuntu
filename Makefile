@@ -4,7 +4,7 @@ TEMPLATES ?= vagrant vsphere
 PACKER_ARGS ?=
 
 JQ_SET_POST_PROCESSOR := .[0]["post-processors"] = .[1]
-JQ_VMWARE_BUILDS_ONLY := .[0]["builders"] = (.[0]["builders"][] | select(.type == "vmware-iso"))
+JQ_VMWARE_BUILDS_ONLY := .[0]["builders"] = [.[0]["builders"][] | select(.type == "vmware-iso")]
 
 export cm ?= puppet
 export cm_version ?=

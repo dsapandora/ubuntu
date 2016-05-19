@@ -42,11 +42,9 @@ current() {
     echo "Current version: ${CURRENT_VERSION}"
 }
 
-tag() {
-    echo "tagged: ${CURRENT_VERSION}"
+tag() {    
+    echo "Tagging: ${CURRENT_VERSION}"
     git fetch --all > /dev/null
-    git add CHANGELOG.md
-    git commit -m "Version ${CURRENT_VERSION} pushed to Atlas"
     git tag -a -m "Version ${CURRENT_VERSION} pushed to Atlas" ${CURRENT_VERSION}
     git push --tags || true
 }
@@ -59,6 +57,14 @@ write_version() {
     git add VERSION
     git commit -m "Bump VERSION to ${NEXT_VERSION}"
 }
+
+write_version() {
+    NEXT_VERSION=${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}
+    echo "Writing files: VERSION CHANGELOG.md"
+    echo ${NEXT_VERSION} > VERSION
+    sed -i "2i\\\\n## ${NEXT_VERSION}" CHANGELOG.md
+    git add VERSION CHANGELOG.md
+    git commit -m "Bump VERSION to ${NEXT_VERSION}"
 
 major() {
     MAJOR_VERSION=$((${MAJOR_VERSION}+1))

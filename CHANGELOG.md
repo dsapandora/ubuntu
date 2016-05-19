@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.18
+
+* Building boxes for ESXi
+* Using patched versions of VMWare Tools
+* Major refactor of code base
+
 ## 2.0.17 (2016-04-24)
 
 * Add Ubuntu 16.04 release box

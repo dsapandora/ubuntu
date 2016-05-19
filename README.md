@@ -43,7 +43,8 @@ Putting this all together, if you want to build a specific box then you can be d
 
     BOXES=ubuntu1604 cm=puppet make clean build-vagrant
 
-The `CHANGELOG.md` is used for describing a version of a box.
+The `CHANGELOG.md` is used for describing a version of a box. So keep this up to date with the main features/improvements/bugfixes
+for the current release.
 
 ### Release Management
 

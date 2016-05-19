@@ -43,6 +43,14 @@ Putting this all together, if you want to build a specific box then you can be d
 
     BOXES=ubuntu1604 cm=puppet make clean build-vagrant
 
+The `CHANGELOG.md` is used for describing a version of a box.
+
+### Release Management
+
+The `VERSION` file contains the version number which is currently being worked on. You can use the `bin/bump.sh` script to
+sign off on a version and start work on a new major/minor/patch version. You can also use this script to tag the repository
+with the completed version number.
+
 ### Acknowledgments
 
 - [Boxcutter Ubuntu](https://github.com/boxcutter/ubuntu) The project which this one is heavily based upon.

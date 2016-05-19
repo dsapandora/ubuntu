@@ -6,6 +6,8 @@ ATLAS_API           = '/api/v1'
 DISTRIBUTION_SERVER = 'http://dist.nerc-lancaster.ac.uk'
 DETAILS             = JSON.parse(File.read('atlas.json'))
 VERSION             = File.read('VERSION').strip
+CHANGELOG           = `awk '/## #{VERSION}/{flag=1;next}/##/{flag=0}flag' CHANGELOG.md`
+
 ATLAS_PROVIDERS     = {
   'vmware'     => 'vmware_desktop',
   'virtualbox' => 'virtualbox'
@@ -78,7 +80,7 @@ get_built_boxes()
 
     create_or_update("#{boxname}/versions", "#{boxname}/version/#{VERSION}", {
       'version[version]'     => VERSION,
-      'version[description]' => "Automated build."
+      'version[description]' => CHANGELOG
     })
 
     box['providers'].each {|p|

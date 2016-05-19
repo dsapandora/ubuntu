@@ -1,0 +1,13 @@
+[{
+  "type": "shell-local",
+  "script": "script/vsphere_upload.sh",
+  "environment_vars":[
+    "cluster={{user `vsphere_cluster`}}",
+    "datacenter={{user `vsphere_datacenter`}}",
+    "datastore={{user `vsphere_datastore`}}",
+    "host={{user `vsphere_host`}}",
+    "vm_name={{user `vm_name`}}-{{user `cm`}}{{user `cm_version`}}-{{user `version`}}",
+    "vm_folder={{user `vsphere_template_folder`}}",
+    "vm_network={{user `vsphere_vlan`}}"
+  ]
+}]

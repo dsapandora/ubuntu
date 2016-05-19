@@ -2,7 +2,7 @@
 
 ### Overview
 
-This repository contains [Packer](https://packer.io/) templates for creating Ubuntu Vagrant and ESXi boxes.
+This repository contains [Packer](https://packer.io/) templates for creating Ubuntu Vagrant and vSphere boxes.
 
 Building of boxes is driven from the supplied `Makefile`. The build supports customisation via environment
 variables. By default the boxes built will contain the latest version of [Puppet](https://puppet.com).

@@ -18,6 +18,8 @@ The supported variables are:
 - `cm_version` Configuration management software version
 - `headless` if the boxes should be built showing the hypervisor gui
 - `version` The version number to label this box with
+- `vsphere_username` The username to use when uploading a vsphere box
+- `vsphere_password` The password to use when uploading a vsphere box
 - `BOXES` the list of boxes to build e.g. "ubuntu1404 ubuntu1604"
 - `ATLAS_TOKEN` the atlas key for the nercceh account to use to register the boxes using atlas
 - `PACKER_ARGS` Any additional arguments which should be passed to packer. This can be useful if only one box type is required:

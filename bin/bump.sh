@@ -65,6 +65,7 @@ write_version() {
     sed -i "2i\\\\n## ${NEXT_VERSION}" CHANGELOG.md
     git add VERSION CHANGELOG.md
     git commit -m "Bump VERSION to ${NEXT_VERSION}"
+}
 
 major() {
     MAJOR_VERSION=$((${MAJOR_VERSION}+1))

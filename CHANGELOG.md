@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.0.19
+
 ## 2.0.18
 
 * Building boxes for ESXi

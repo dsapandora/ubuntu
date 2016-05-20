@@ -31,7 +31,12 @@ tpl-vsphere.json: tpl-ubuntu.json
 
 publish:
 	rsync -av --include '*/' --include '*.box' --exclude '*' box/ -e ssh automaton@dist.nerc-lancaster.ac.uk:/www/boxes
-	ruby bin/register_atlas.rb
+	ruby bin/atlas.rb register
+
+release:
+	ruby bin/atlas.rb release
+	bash bin/bump.sh tag
+	bash bin/bump.sh patch
 
 clean:
 	$(RM) -r output-*

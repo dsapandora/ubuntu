@@ -36,6 +36,15 @@ def get_built_boxes()
   }}.select {|b| b['provider']} # Remove unknown providers
 end
 
+# Group the boxes by provider and return those which I can register to atlas
+# (is described in the atlas.json file)
+def get_known_boxes()
+  get_built_boxes()
+    .group_by {|b| b['box']}
+    .map      {|k,v| { 'details' => get_box_details(k), 'providers' => v }}
+    .select   {|b| b['details']} # Remove unknown providers
+end
+
 # Create or update a resource on atlas.
 def create_or_update(create_uri, resource_uri, data)
   http = Net::HTTP.new('atlas.hashicorp.com', 443)
@@ -60,14 +69,25 @@ def create_or_update(create_uri, resource_uri, data)
   puts "Updated: #{resource_uri}"
 end
 
-# Interact with the Atlas rest api to register the built box. The boxes
-# should already have been moved to the correct location on the Distribution
-# Server.
-get_built_boxes()
-  .group_by {|b| b['box']}
-  .map      {|k,v| { 'details' => get_box_details(k), 'providers' => v }}
-  .select   {|b| b['details']} # Remove unknown providers
-  .each     {|box|
+def release_version(name, version)
+  http = Net::HTTP.new('atlas.hashicorp.com', 443)
+  http.use_ssl = true
+  resource_uri = "box/nercceh/#{name}/version/#{version}/release"
+  req = Net::HTTP::Put.new("#{ATLAS_API}/#{resource_uri}")
+  req.set_form_data({'access_token'=> ENV['ATLAS_TOKEN']})
+  update = http.request(req) # Perform the update/creation
+  if update.code != '200'    # Make sure that the status code was 200
+    raise "Unknown HTTP status #{resource_uri}: #{update.code} #{update.body}"
+  end
+  puts "Released: #{name}@#{version}"
+end
+
+case ARGV[0]
+when "register"
+  # Interact with the Atlas rest api to register the built box. The boxes
+  # should already have been moved to the correct location on the Distribution
+  # Server.
+  get_known_boxes().each {|box|
     boxname = "box/nercceh/#{box['details']['name']}"
     version = "#{boxname}/version/#{VERSION}"
 
@@ -90,3 +110,12 @@ get_built_boxes()
       })
     }
   }
+when "release"
+  # Scan through the built boxes which are at the version specified in the version file.
+  # Notify atlas that these boxes should now be considered released.
+  get_known_boxes().each {|box|
+    release_version(box['details']['name'], VERSION)
+  }
+else
+  puts "Nothing to do: I can only *register* or *release*"
+end

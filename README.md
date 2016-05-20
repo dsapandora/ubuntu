@@ -52,6 +52,13 @@ The `VERSION` file contains the version number which is currently being worked o
 sign off on a version and start work on a new major/minor/patch version. You can also use this script to tag the repository
 with the completed version number.
 
+You can execute the `make release` task. This will:
+
+1. Perform an atlas release for all of the boxes which have been built at the current version
+2. Tag the current branch with the latest number
+3. Increase the working version number by one patch point
+4. Create an entry in the CHANGELOG.md for the new version
+
 ### Acknowledgments
 
 - [Boxcutter Ubuntu](https://github.com/boxcutter/ubuntu) The project which this one is heavily based upon.

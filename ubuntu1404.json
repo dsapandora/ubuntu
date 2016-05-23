@@ -1,6 +1,6 @@
 {
   "vm_name": "ubuntu1404",
-  "iso_checksum": "3ffb7a3690ce9a07ac4a4d1b829f990681f7e47d",
-  "iso_url": "http://releases.ubuntu.mirrors.uk2.net/14.04/ubuntu-14.04.4-server-amd64.iso",
+  "iso_checksum": "0501c446929f713eb162ae2088d8dc8b6426224a",
+  "iso_url": "http://old-releases.ubuntu.com/releases/trusty/ubuntu-14.04.3-server-amd64.iso",
   "boot_command_prefix": "<esc><esc><enter><wait>"
 }

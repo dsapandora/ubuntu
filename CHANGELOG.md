@@ -2,6 +2,8 @@
 
 ## 2.0.19
 
+* Moving back to Ubuntu 14.04.3 to fix vmhgfs module
+
 ## 2.0.18
 
 * Building boxes for ESXi

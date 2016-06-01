@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.0.20
+
 ## 2.0.19
 
 * Moving back to Ubuntu 14.04.3 to fix vmhgfs module

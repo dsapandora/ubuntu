@@ -51,6 +51,7 @@
         "script/virtualbox.sh",
         "script/cmtool.sh",
         "script/motd.sh",
+        "script/systemd.sh",
         "script/minimize.sh",
         "script/cleanup.sh"
       ],

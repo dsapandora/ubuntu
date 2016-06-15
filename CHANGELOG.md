@@ -1,6 +1,9 @@
 # Changelog
 
-## 2.0.20
+## 2.0.20 (2016-06-14)
+
+* Add script that creates systemd override file to reduce wait timeout of networking startup
+* Change partition schema to regular
 
 ## 2.0.19
 

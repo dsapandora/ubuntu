@@ -1,5 +1,8 @@
 {
   "install_vagrant_key": "false",
+  "ssh_fullname": "packer",
+  "ssh_password": "packer",
+  "ssh_username": "packer",
   "vsphere_cluster": "Lancaster_cluster",
   "vsphere_datacenter": "Lancaster",
   "vsphere_datastore": "v3700-01-vol1",

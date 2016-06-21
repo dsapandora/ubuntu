@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.0.22
+
 ## 2.0.21
 
 * Override default ssh user for machines built to target vsphere

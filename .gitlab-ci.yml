@@ -1,3 +1,18 @@
+variables:
+  headless: true
+  BOXES:    ubuntu1404 ubuntu1604
+  
+# TODO: Only run on shell runner
+packer:
+  stage: deploy
+  script: 
+    - make all publish
+  after_script:
+    - killall -9 vmware-vmx
+    - killall -9 VBoxHeadless
+    - rm -Rf ~/VirtualBox\ VMs/*
+  when: manual
+
 mirror:
   stage: build
   image: buildpack-deps:xenial-scm

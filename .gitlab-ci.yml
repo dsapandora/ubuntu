@@ -1,9 +1,24 @@
 variables:
   headless: true
-  BOXES:    ubuntu1404 ubuntu1604
   
+mirror:
+  stage: build
+  image: buildpack-deps:xenial-scm
+  script:
+    - git push -q --prune https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/NERC-CEH/ubuntu.git +refs/remotes/origin/*:refs/heads/* +refs/tags/*:refs/tags/*
+
+packer_ubuntu1404:
+  <<: *packer_definition
+  variables:
+    BOXES: ubuntu1404
+
+packer_ubuntu1604:
+  <<: *packer_definition
+  variables:
+    BOXES: ubuntu1604
+
 # TODO: Only run on shell runner
-packer:
+.packer_template: &packer_definition
   stage: deploy
   script: 
     - make all publish
@@ -12,9 +27,3 @@ packer:
     - killall -9 VBoxHeadless
     - rm -Rf ~/VirtualBox\ VMs/*
   when: manual
-
-mirror:
-  stage: build
-  image: buildpack-deps:xenial-scm
-  script:
-    - git push -q --prune https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/NERC-CEH/ubuntu.git +refs/remotes/origin/*:refs/heads/* +refs/tags/*:refs/tags/*

@@ -1,5 +1,5 @@
 variables:
-  headless: true
+  headless: 'true'
   
 mirror:
   stage: build

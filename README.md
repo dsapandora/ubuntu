@@ -39,6 +39,10 @@ has been defined in the **atlas.json** file then the boxes will be registered on
 
 **N.B the box will be registered in an unreleased state. You will have to log in to atlas cloud in order to release**
 
+By default, the `make publish` task will upload boxes to *dist.nerc-lancaster.ac.uk* using the **automaton** user. The automaton
+user does not have a password, as such an `DIST_RSA` file can be specified to enable public/private key authentication. The `DIST_USER`
+can also be adjusted to enable rsyncing as a different user.
+
 Putting this all together, if you want to build a specific box then you can be doing something like:
 
     BOXES=ubuntu1604 cm=puppet make clean build-vagrant

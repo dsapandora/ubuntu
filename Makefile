@@ -1,6 +1,7 @@
 BOX_FILENAMES := $(wildcard ubuntu*.json)
 BOXES ?= $(basename $(BOX_FILENAMES))
 TEMPLATES ?= vagrant vsphere
+DIST_USER ?= automaton
 PACKER_ARGS ?=
 
 JQ_SET_POST_PROCESSOR := .[0]["post-processors"] = .[1]
@@ -30,7 +31,7 @@ tpl-vsphere.json: tpl-ubuntu.json
 	jq -s '$(JQ_SET_POST_PROCESSOR) | $(JQ_VMWARE_BUILDS_ONLY) | .[0]' tpl-ubuntu.json tpl/postprocess_vsphere.json > tpl-vsphere.json
 
 publish:
-	rsync -av --include '*/' --include '*.box' --exclude '*' box/ -e ssh automaton@dist.nerc-lancaster.ac.uk:/www/boxes
+	rsync -av --include '*/' --include '*.box' --exclude '*' box/ -e "ssh -i '$(DIST_RSA)'" $(DIST_USER)@dist.nerc-lancaster.ac.uk:/www/boxes
 	ruby bin/atlas.rb register
 
 release:

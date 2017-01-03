@@ -77,10 +77,10 @@ install_puppet()
     apt-get update
     if [[ ${CM_VERSION:-} == 'latest' ]]; then
       echo "Installing latest Puppet version"
-      apt-get install -y puppet
+      apt-get install -y puppet-agent
     else
       echo "Installing Puppet version $CM_VERSION"
-      apt-get install -y puppet-common=$CM_VERSION puppet=$CM_VERSION
+      apt-get install -y puppet-agent=$CM_VERSION
     fi
     rm -f ${DEB_NAME}
 }

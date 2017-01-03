@@ -20,6 +20,7 @@ The supported variables are:
 - `version` The version number to label this box with
 - `vsphere_username` The username to use when uploading a vsphere box
 - `vsphere_password` The password to use when uploading a vsphere box
+- 'UPLOAD_DIR' the default directory where newly created vagrant boxes should be uploaded to
 - `BOXES` the list of boxes to build e.g. "ubuntu1404 ubuntu1604"
 - `ATLAS_TOKEN` the atlas key for the nercceh account to use to register the boxes using atlas
 - `PACKER_ARGS` Any additional arguments which should be passed to packer. This can be useful if only one box type is required:
@@ -31,17 +32,13 @@ can call `make clean build-vagrant`.
 
 ### Publishing Boxes
 
-The task `make publish` will copy over any built boxes to the http://dist.nerc-lancaster.ac.uk. If the metadata for the box
-has been defined in the **atlas.json** file then the boxes will be registered on the atlas cloud. In order to do this, the
-`ATLAS_TOKEN` is required to be supplied to make as an environment variable:
+The task `make publish` will copy over any built boxes to http://dist.nerc-lancaster.ac.uk (via a san mount `UPLOAD_DIR`). If the 
+metadata for the box has been defined in the **atlas.json** file then the boxes will be registered on the atlas cloud. In order to
+do this, the `ATLAS_TOKEN` is required to be supplied to make as an environment variable:
 
     ATLAS_TOKEN=my_At7a5_Ap1_k3y make clean build publish
 
 **N.B the box will be registered in an unreleased state. You will have to log in to atlas cloud in order to release**
-
-By default, the `make publish` task will upload boxes to *dist.nerc-lancaster.ac.uk* using the **automaton** user. The automaton
-user does not have a password, as such an `DIST_RSA` file can be specified to enable public/private key authentication. The `DIST_USER`
-can also be adjusted to enable rsyncing as a different user.
 
 Putting this all together, if you want to build a specific box then you can be doing something like:
 

@@ -2,6 +2,10 @@
 
 ## 2.0.23
 
+* Upgrade to 16.04.2 LTS
+* Change default locale to en_GB.UTF-8
+* Added desktop version of Ubuntu 16.04
+
 ## 2.0.22
 
 * Upgrading to puppet 4

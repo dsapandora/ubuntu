@@ -1,6 +1,11 @@
 # Changelog
 
+## 2.0.25
+
 ## 2.0.24
+
+* Upgrade to 16.04.3 LTS
+* Increase default disk size to 50GB
 
 ## 2.0.23
 

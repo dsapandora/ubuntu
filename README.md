@@ -22,27 +22,36 @@ The supported variables are:
 - `vsphere_password` The password to use when uploading a vsphere box
 - 'UPLOAD_DIR' the default directory where newly created vagrant boxes should be uploaded to
 - `BOXES` the list of boxes to build e.g. "ubuntu1404 ubuntu1604"
-- `ATLAS_TOKEN` the atlas key for the nercceh account to use to register the boxes using atlas
+- `VAGRANT_CLOUD_TOKEN` the vagrant cloud key for the nercceh account to use to register the boxes using atlas (see keepass)
 - `PACKER_ARGS` Any additional arguments which should be passed to packer. This can be useful if only one box type is required:
 
         PACKER_ARGS="-only=vmware_iso" make build
 
-The `all` target will `clean` and build all box types. If only one box type is required (e.g. vagrant boxes) then you 
+The `all` target will `clean` and build all box types. If only one box type is required (e.g. vagrant boxes) then you
 can call `make clean build-vagrant`.
 
 ### Publishing Boxes
 
-The task `make publish` will copy over any built boxes to http://dist.nerc-lancaster.ac.uk (via a san mount `UPLOAD_DIR`). If the 
-metadata for the box has been defined in the **atlas.json** file then the boxes will be registered on the atlas cloud. In order to
-do this, the `ATLAS_TOKEN` is required to be supplied to make as an environment variable:
+The task `make publish` will copy over any built boxes to http://dist.nerc-lancaster.ac.uk (via a san mount `UPLOAD_DIR`). The boxes
+will be registered on the vagrant cloud, but not released. In order to do this, the `VAGRANT_CLOUD_TOKEN` is required to be supplied
+to make as an environment variable:
 
-    ATLAS_TOKEN=my_At7a5_Ap1_k3y make clean build publish
+    VAGRANT_TOKEN_CLOUD=my_At7a5_Ap1_k3y make clean build publish
 
-**N.B the box will be registered in an unreleased state. You will have to log in to atlas cloud in order to release**
+To release the boxes, use the release target:
+
+    VAGRANT_TOKEN_CLOUD=my_At7a5_Ap1_k3y make release
 
 Putting this all together, if you want to build a specific box then you can be doing something like:
 
     BOXES=ubuntu1604 cm=puppet make clean build-vagrant
+
+Or to build a new template on vsphere cluster:
+
+    vsphere_username=adminla_xxx@vsphere.local vsphere_password=xxxxxxx BOXES=ubuntu1604 cm=puppet make build-vsphere
+
+**Once the template is uploaded, currently, it's not automatically flagged as a template, so you should manually connect to the
+vsphere console and mark it as such so it's not inadvertently powered up.**
 
 The `CHANGELOG.md` is used for describing a version of a box. So keep this up to date with the main features/improvements/bugfixes
 for the current release.

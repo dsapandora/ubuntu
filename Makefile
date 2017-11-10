@@ -32,7 +32,6 @@ tpl-vsphere.json: tpl-ubuntu.json
 
 publish:
 	rsync -av --include '*/' --include '*.box' --exclude '*' box/ $(UPLOAD_DIR)
-	ruby bin/atlas.rb register
 
 release:
 	ruby bin/atlas.rb release

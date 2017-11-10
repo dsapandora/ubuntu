@@ -85,6 +85,11 @@
     "virtualbox_guest_os_type": "Ubuntu_64",
     "vmware_guest_os_type": "ubuntu-64",
     "vmware_restart_after_install": "false",
-    "vmware_tools_version": "latest"
+    "vmware_tools_version": "latest",
+    "vsphere_username": "{{env `vsphere_username`}}",
+    "vsphere_password": "{{env `vsphere_password`}}",
+    "vagrant_cloud_user": "nercceh",
+    "vagrant_cloud_token": "{{env `VAGRANT_CLOUD_TOKEN`}}",
+    "vagrant_distribution_server": "http://dist.nerc-lancaster.ac.uk"
   }
 }

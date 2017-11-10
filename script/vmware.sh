@@ -23,14 +23,12 @@ if [[ $PACKER_BUILDER_TYPE =~ vmware ]]; then
 
     VMWARE_TOOLBOX_CMD_VERSION=$(vmware-toolbox-cmd -v)
     echo "==> Installed VMware Tools ${VMWARE_TOOLBOX_CMD_VERSION}"
-    
+
     if [[ "$VMWARE_RESTART_AFTER_INSTALL" == true ]]; then
         echo "==> Restarting to enable VMware tools"
         # Recompile when the kernel is updated
         # Make sure the kernel module is loaded at boot
         echo "answer AUTO_KMODS_ENABLED yes" >> /etc/vmware-tools/locations
         echo "vmhgfs" > /etc/modules-load.d/vmware.conf
-        service ssh stop
-        reboot
     fi
 fi

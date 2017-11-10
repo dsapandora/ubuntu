@@ -20,17 +20,17 @@ def get_box_url(box)
   return "#{DISTRIBUTION_SERVER}/#{path}"
 end
 
-# Returns the details of the box for the given name. If we don't know 
+# Returns the details of the box for the given name. If we don't know
 # what this box is then we return nil
 def get_box_details(name)
   DETAILS.select { |d| name.start_with?(d['prefix']) }.first
 end
 
-# Locate the list of boxes which have been created that should be registered to 
+# Locate the list of boxes which have been created that should be registered to
 # the vagrant cloud
 def get_built_boxes()
   Dir.glob("box/**/*-#{VERSION}.box").map { |b| {
-    'provider' => ATLAS_PROVIDERS[b.split('/')[1]], 
+    'provider' => ATLAS_PROVIDERS[b.split('/')[1]],
     'box'      => File.basename(b, "-#{VERSION}.box"),
     'url'      => get_box_url(b)
   }}.select {|b| b['provider']} # Remove unknown providers
@@ -50,14 +50,14 @@ def create_or_update(create_uri, resource_uri, data)
   http = Net::HTTP.new('atlas.hashicorp.com', 443)
   http.use_ssl = true
   data['access_token'] = ENV['ATLAS_TOKEN'] # Set the access token
-  
+
   # Test to see if the resource already exists. It it does, will will update,
   # otherwise we will create
   res = http.request_get("#{ATLAS_API}/#{resource_uri}")
   req = case res.code
   when '404' then Net::HTTP::Post.new("#{ATLAS_API}/#{create_uri}")
   when '200' then Net::HTTP::Put.new("#{ATLAS_API}/#{resource_uri}")
-  else 
+  else
     raise "Unknown HTTP status #{resource_uri}: #{res.code} #{res.body}"
   end
 
@@ -70,11 +70,11 @@ def create_or_update(create_uri, resource_uri, data)
 end
 
 def release_version(name, version)
-  http = Net::HTTP.new('atlas.hashicorp.com', 443)
+  http = Net::HTTP.new('app.vagrantup.com', 443)
   http.use_ssl = true
   resource_uri = "box/nercceh/#{name}/version/#{version}/release"
   req = Net::HTTP::Put.new("#{ATLAS_API}/#{resource_uri}")
-  req.set_form_data({'access_token'=> ENV['ATLAS_TOKEN']})
+  req.add_field("Authorization", "Bearer #{ENV['VAGRANT_CLOUD_TOKEN']}")
   update = http.request(req) # Perform the update/creation
   if update.code != '200'    # Make sure that the status code was 200
     raise "Unknown HTTP status #{resource_uri}: #{update.code} #{update.body}"

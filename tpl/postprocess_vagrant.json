@@ -1,6 +1,16 @@
-[{
+[
+  [{
+  "type": "vagrant",
   "keep_input_artifact": false,
   "output": "box/{{.Provider}}/{{user `vm_name`}}-{{user `cm`}}{{user `cm_version`}}-{{user `version`}}.box",
-  "type": "vagrant",
   "vagrantfile_template": "{{ user `vagrantfile_template` }}"
-}]
+  },
+  {
+    "type": "vagrant-cloud",
+    "access_token": "{{user `vagrant_cloud_token`}}",
+    "box_tag": "{{user `vagrant_cloud_user`}}/{{user `vagrant_cloud_boxname`}}",
+    "version": "{{user `version`}}",
+    "box_download_url": "{{user `vagrant_distribution_server`}}/{{user `vm_name`}}-{{user `cm`}}{{user `cm_version`}}-{{user `version`}}.box",
+    "no_release": "true"
+  }]
+]

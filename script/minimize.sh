@@ -12,7 +12,7 @@ dpkg --get-selections | grep -v deinstall
 
 # Remove some packages to get a minimal install
 echo "==> Removing all linux kernels except the currrent one"
-dpkg --list | awk '{ print $2 }' | grep 'linux-image-3.*-generic' | grep -v $(uname -r) | xargs apt-get -y purge
+dpkg --list | awk '{ print $2 }' | grep -e 'linux-\(headers\|image\)-.*[0-9]\($\|-generic\)' | grep -v "$(uname -r | sed 's/-generic//')" | xargs apt-get -y purge
 echo "==> Removing linux source"
 dpkg --list | awk '{ print $2 }' | grep linux-source | xargs apt-get -y purge
 echo "==> Removing development packages"
@@ -21,7 +21,7 @@ echo "==> Removing documentation"
 dpkg --list | awk '{ print $2 }' | grep -- '-doc$' | xargs apt-get -y purge
 echo "==> Removing development tools"
 #dpkg --list | grep -i compiler | awk '{ print $2 }' | xargs apt-get -y purge
-#apt-get -y purge cpp gcc g++ 
+#apt-get -y purge cpp gcc g++
 apt-get -y purge build-essential git
 echo "==> Removing default system Ruby"
 apt-get -y purge ruby ri doc

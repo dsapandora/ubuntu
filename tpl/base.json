@@ -23,6 +23,25 @@
         ["modifyvm", "{{.Name}}", "--vrdeproperty", "VNCPassword=password"]
       ],
       "virtualbox_version_file": ".vbox_version"
+    },
+    {
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "region": "eu-west-1",
+      "source_ami_filter": {
+        "filters": {
+        "virtualization-type": "hvm",
+        "name": "ubuntu/images/*ubuntu-xenial-16.04-amd64-server-*",
+        "root-device-type": "ebs"
+        },
+        "owners": ["099720109477"],
+        "most_recent": true
+      },
+      "instance_type": "t2.micro",
+      "ssh_username": "ubuntu",
+      "ami_name": "packer {{timestamp}}",
+      "type": "amazon-ebs"
+
     }
   ],
   "provisioners": [
@@ -58,7 +77,34 @@
         "script/minimize.sh",
         "script/cleanup.sh"
       ],
-      "type": "shell"
+      "type": "shell",
+      "except": ["amazon-ebs"]
+    },
+    {
+      "environment_vars": [
+        "CM={{user `cm`}}",
+        "CM_VERSION={{user `cm_version`}}",
+        "CLEANUP_PAUSE={{user `cleanup_pause`}}",
+        "SSH_USERNAME={{user `ssh_username`}}",
+        "SSH_PASSWORD={{user `ssh_password`}}",
+        "http_proxy={{user `http_proxy`}}",
+        "https_proxy={{user `https_proxy`}}",
+        "ftp_proxy={{user `ftp_proxy`}}",
+        "rsync_proxy={{user `rsync_proxy`}}",
+        "no_proxy={{user `no_proxy`}}" 
+      ],
+      "execute_command": "echo '{{ user `ssh_password` }}' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "scripts": [
+        "script/locale-aws.sh",
+        "script/update.sh",
+        "script/sshd.sh",
+        "script/cmtool.sh",
+        "script/motd.sh",
+        "script/systemd.sh",
+        "script/minimize.sh"
+      ],
+      "type": "shell",
+      "only": ["amazon-ebs"]
     }
   ],
   "variables": {
@@ -90,6 +136,8 @@
     "vsphere_password": "{{env `vsphere_password`}}",
     "vagrant_cloud_user": "nercceh",
     "vagrant_cloud_token": "{{env `VAGRANT_CLOUD_TOKEN`}}",
-    "vagrant_distribution_server": "http://dist.nerc-lancaster.ac.uk"
+    "vagrant_distribution_server": "http://dist.nerc-lancaster.ac.uk",
+    "aws_access_key": "{{env `access_key`}}",
+    "aws_secret_key": "{{env `secret_key`}}"
   }
 }

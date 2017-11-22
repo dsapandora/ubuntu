@@ -30,6 +30,14 @@ The supported variables are:
 The `all` target will `clean` and build all box types. If only one box type is required (e.g. vagrant boxes) then you
 can call `make clean build-vagrant`.
 
+### Building Amazon Machine Images(AMIs)
+
+This is done using the amazon-ebs builder. The builder launches an ec2 instance from a source AMI and creates a new AMI from that machine. This is all done on the AWS account. The resulting artifact is stored on the AWS account.
+
+# An example command to build an Amazon AMI
+access_key=xxxxxxxx secret_key=xxxxxxxxx BOXES=ubuntu1604 PACKER_ARGS="-only=amazon-ebs" cm=ansible make clean build-ami
+
+
 ### Publishing Boxes
 
 The task `make publish` will copy over any built boxes to http://dist.nerc-lancaster.ac.uk (via a san mount `UPLOAD_DIR`). The boxes

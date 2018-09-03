@@ -7,7 +7,7 @@
     "hostname={{ user `hostname` }} ",
     "grub-installer/bootdev=/dev/sda<wait> ",
     "fb=false debconf/frontend=noninteractive ",
-    "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=GB ",
+    "keyboard-configuration/modelcode=GB keyboard-configuration/layout=GB ",
     "keyboard-configuration/variant=GB console-setup/ask_detect=false ",
     "passwd/user-fullname={{ user `ssh_fullname` }} ",
     "passwd/user-password={{ user `ssh_password` }} ",

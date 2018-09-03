@@ -10,7 +10,7 @@
     "access_token": "{{user `vagrant_cloud_token`}}",
     "box_tag": "{{user `vagrant_cloud_user`}}/{{user `vagrant_cloud_boxname`}}",
     "version": "{{user `version`}}",
-    "box_download_url": "{{user `vagrant_distribution_server`}}/{{user `vm_name`}}-{{user `cm`}}{{user `cm_version`}}-{{user `version`}}.box",
+    "box_download_url": "{{user `vagrant_distribution_server`}}/boxes/{{.Provider}}/{{user `vm_name`}}-{{user `cm`}}{{user `cm_version`}}-{{user `version`}}.box",
     "no_release": "true"
   }]
 ]

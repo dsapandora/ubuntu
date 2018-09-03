@@ -15,7 +15,7 @@ fi
 # Ubuntu 12.04 & 14.04
 if [ -d "/var/lib/dhcp" ]; then
     rm /var/lib/dhcp/*
-fi 
+fi
 
 # Add delay to prevent "vagrant reload" from failing
 echo "pre-up sleep 2" >> /etc/network/interfaces
@@ -47,16 +47,16 @@ echo "==> Clearing last login information"
 >/var/log/btmp
 
 # Whiteout root
-count=$(df --sync -kP / | tail -n1  | awk -F ' ' '{print $4}')
-let count--
-dd if=/dev/zero of=/tmp/whitespace bs=1024 count=$count
-rm /tmp/whitespace
+# count=$(df --sync -kP / | tail -n1  | awk -F ' ' '{print $4}')
+# let count--
+# dd if=/dev/zero of=/tmp/whitespace bs=1024 count=$count
+# rm /tmp/whitespace
 
 # Whiteout /boot
-count=$(df --sync -kP /boot | tail -n1 | awk -F ' ' '{print $4}')
-let count--
-dd if=/dev/zero of=/boot/whitespace bs=1024 count=$count
-rm /boot/whitespace
+# count=$(df --sync -kP /boot | tail -n1 | awk -F ' ' '{print $4}')
+# let count--
+# dd if=/dev/zero of=/boot/whitespace bs=1024 count=$count
+# rm /boot/whitespace
 
 echo '==> Clear out swap and disable until reboot'
 set +e
@@ -76,8 +76,8 @@ if [ "x${swapuuid}" != "x" ]; then
 fi
 
 # Zero out the free space to save space in the final image
-dd if=/dev/zero of=/EMPTY bs=1M  || echo "dd exit code $? is suppressed"
-rm -f /EMPTY
+# dd if=/dev/zero of=/EMPTY bs=1M  || echo "dd exit code $? is suppressed"
+# rm -f /EMPTY
 
 # Make sure we wait until all the data is written to disk, otherwise
 # Packer might quite too early before the large files are deleted

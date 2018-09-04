@@ -28,8 +28,8 @@ apt-get -y autoremove --purge
 apt-get -y clean
 apt-get -y autoclean
 
-echo "==> Installed packages"
-dpkg --get-selections | grep -v deinstall
+# echo "==> Installed packages"
+# dpkg --get-selections | grep -v deinstall
 
 DISK_USAGE_BEFORE_CLEANUP=$(df -h)
 
@@ -83,8 +83,8 @@ fi
 # Packer might quite too early before the large files are deleted
 sync
 
-echo "==> Disk usage before cleanup"
-echo ${DISK_USAGE_BEFORE_CLEANUP}
+# echo "==> Disk usage before cleanup"
+# echo ${DISK_USAGE_BEFORE_CLEANUP}
 
-echo "==> Disk usage after cleanup"
-df -h
+# echo "==> Disk usage after cleanup"
+# df -h

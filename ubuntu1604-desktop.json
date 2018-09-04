@@ -2,9 +2,10 @@
   "vm_name": "ubuntu1604-desktop",
   "vagrant_cloud_boxname": "ubuntu16.04-desktop",
   "desktop": "true",
+  "update": "true",
   "disk_size": "120000",
-  "iso_checksum": "0e397b4bf4222fdc7cf7f7c0f88ee9520cd9eab5",
-  "iso_url": "http://releases.ubuntu.mirrors.uk2.net/16.04/ubuntu-16.04.5-desktop-amd64.iso",
+  "iso_checksum": "ee32c555567dd5407c58a1cfc7e668ab37a99d99",
+  "iso_url": "http://releases.ubuntu.mirrors.uk2.net/16.04/ubuntu-16.04.5-server-amd64.iso",
   "vmware_restart_after_install": "true",
   "vagrantfile_template": "tpl/vagrantfile-ubuntu1604-desktop.tpl"
 }

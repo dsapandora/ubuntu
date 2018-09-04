@@ -66,12 +66,12 @@
       "scripts": [
         "script/locale.sh",
         "script/desktop.sh",
-        "script/update.sh",
         "script/vagrant.sh",
         "script/sshd.sh",
         "script/vmware.sh",
         "script/virtualbox.sh",
         "script/cmtool.sh",
+        "script/update.sh",
         "script/motd.sh",
         "script/systemd.sh",
         "script/minimize.sh",
@@ -91,7 +91,7 @@
         "https_proxy={{user `https_proxy`}}",
         "ftp_proxy={{user `ftp_proxy`}}",
         "rsync_proxy={{user `rsync_proxy`}}",
-        "no_proxy={{user `no_proxy`}}" 
+        "no_proxy={{user `no_proxy`}}"
       ],
       "execute_command": "echo '{{ user `ssh_password` }}' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
       "scripts": [

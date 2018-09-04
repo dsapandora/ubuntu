@@ -12,7 +12,7 @@ export cm_version ?=
 export headless ?= false
 export version ?= $(shell cat VERSION)
 
-.PHONY : clean
+.PHONY : clean publish release
 
 all: clean build-vagrant build-vsphere build-ami
 

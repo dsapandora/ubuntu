@@ -31,7 +31,7 @@ tpl-vsphere.json: tpl-ubuntu.json
 	jq -s '$(JQ_SET_POST_PROCESSOR) | $(JQ_VMWARE_BUILDS_ONLY) | .[0]' tpl-ubuntu.json tpl/postprocess_vsphere.json > tpl-vsphere.json
 
 tpl-ami.json: tpl/base.json
-	jq -s '$(JQ_SET_POST_PROCESSOR) | .[0]' tpl/base.json > tpl-ami.json
+	jq -s '$(JQ_SET_POST_PROCESSOR) | .[0]' tpl/base_ami.json > tpl-ami.json
 
 publish:
 	rsync -av --include '*/' --include '*.box' --exclude '*' box/ $(UPLOAD_DIR)

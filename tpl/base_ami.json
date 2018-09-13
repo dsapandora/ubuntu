@@ -1,28 +1,23 @@
 {
   "builders": [
     {
-      "guest_os_type": "{{ user `vmware_guest_os_type` }}",
-      "http_directory": "http",
-      "output_directory": "output-{{ user `vm_name` }}-vmware-iso",
-      "tools_upload_flavor": "linux",
-      "type": "vmware-iso",
-      "vmx_data": {
-        "memsize": "{{ user `memory` }}",
-        "numvcpus": "{{ user `cpus` }}"
-      }
-    },
-    {
-      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
-      "guest_os_type": "{{ user `virtualbox_guest_os_type` }}",
-      "hard_drive_interface": "sata",
-      "output_directory": "output-{{ user `vm_name` }}-virtualbox-iso",
-      "type": "virtualbox-iso",
-      "vboxmanage": [
-        ["modifyvm", "{{.Name}}", "--memory", "{{ user `memory` }}"],
-        ["modifyvm", "{{.Name}}", "--cpus", "{{ user `cpus` }}"],
-        ["modifyvm", "{{.Name}}", "--vrdeproperty", "VNCPassword=password"]
-      ],
-      "virtualbox_version_file": ".vbox_version"
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "region": "eu-west-1",
+      "source_ami_filter": {
+        "filters": {
+        "virtualization-type": "hvm",
+        "name": "ubuntu/images/*ubuntu-xenial-16.04-amd64-server-*",
+        "root-device-type": "ebs"
+        },
+        "owners": ["099720109477"],
+        "most_recent": true
+      },
+      "instance_type": "t2.micro",
+      "ssh_username": "ubuntu",
+      "ami_name": "packer {{timestamp}}",
+      "type": "amazon-ebs"
+
     }
   ],
   "provisioners": [
@@ -31,10 +26,6 @@
         "CM={{user `cm`}}",
         "CM_VERSION={{user `cm_version`}}",
         "CLEANUP_PAUSE={{user `cleanup_pause`}}",
-        "DESKTOP={{user `desktop`}}",
-        "VMWARE_RESTART_AFTER_INSTALL={{user `vmware_restart_after_install`}}",
-        "VMWARE_TOOLS_VERSION={{user `vmware_tools_version`}}",
-        "INSTALL_VAGRANT_KEY={{user `install_vagrant_key`}}",
         "SSH_USERNAME={{user `ssh_username`}}",
         "SSH_PASSWORD={{user `ssh_password`}}",
         "http_proxy={{user `http_proxy`}}",
@@ -45,20 +36,16 @@
       ],
       "execute_command": "echo '{{ user `ssh_password` }}' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
       "scripts": [
-        "script/locale.sh",
-        "script/desktop.sh",
-        "script/vagrant.sh",
-        "script/sshd.sh",
-        "script/vmware.sh",
-        "script/virtualbox.sh",
-        "script/cmtool.sh",
+        "script/locale-aws.sh",
         "script/update.sh",
+        "script/sshd.sh",
+        "script/cmtool.sh",
         "script/motd.sh",
         "script/systemd.sh",
-        "script/minimize.sh",
-        "script/cleanup.sh"
+        "script/minimize.sh"
       ],
-      "type": "shell"
+      "type": "shell",
+      "only": ["amazon-ebs"]
     }
   ],
   "variables": {

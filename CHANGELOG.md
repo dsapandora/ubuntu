@@ -5,6 +5,7 @@
 * Upgrade to 16.04.4 LTS
 * Switch tools to using open-vm-tools as default
 * Increase size of desktop disk to 120GB
+* Split ami build into separate base-ami.json
 
 ## 2.0.24
 

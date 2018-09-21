@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.0.26
+
 ## 2.0.25
 
 * Upgrade to 16.04.4 LTS

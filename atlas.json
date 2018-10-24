@@ -19,5 +19,10 @@
     "name": "ubuntu16.04-desktop",
     "short_description": "An ubuntu 16.04 desktop box with puppet preinstalled",
     "description": "This is a clean installation of Ubuntu 16.04 desktop x64 with:\n- Puppet installed\n- Vim installed"
+  }, {
+    "prefix": "ubuntu1804-puppet",
+    "name": "ubuntu18.04",
+    "short_description": "An ubuntu 18.04 box with puppet preinstalled",
+    "description": "This is a clean installation of Ubuntu 18.04 x64 with:\n- Puppet installed\n- Vim installed"
   }
 ]

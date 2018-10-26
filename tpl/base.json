@@ -66,7 +66,7 @@
     "cleanup_pause": "",
     "cm": "{{env `cm`}}",
     "cm_version": "{{env `cm_version`}}",
-    "cpus": "2",
+    "cpus": "1",
     "disk_size": "50000",
     "ftp_proxy": "{{env `ftp_proxy`}}",
     "headless": "{{env `headless`}}",
